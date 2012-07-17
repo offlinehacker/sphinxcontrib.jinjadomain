@@ -86,11 +86,11 @@ For example:
 
 .. sourcecode:: rst
 
-   .. autojinja:: /etc/network/interfaces
+   .. autojinja: sample_template.in
 
 will be rendered as:
 
-    .. autojinja:: /etc/network/interfaces
+    .. autojinja:: sample_template.in
 
 Author and License
 ------------------

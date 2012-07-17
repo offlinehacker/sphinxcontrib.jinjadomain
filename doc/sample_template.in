@@ -1,0 +1,6 @@
+{#
+This is a sample template
+
+:param param1: This is sample input parameter to this template
+:type param1: str
+#}
