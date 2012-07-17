@@ -55,8 +55,8 @@ class JinjaResource(ObjectDescription):
 class JinjaIndex(Index):
 
     name = 'jinjatemplates'
-    localname = 'Jinja templates'
-    shortname = 'jinja templates'
+    localname = 'templates'
+    shortname = 'templates'
 
     def __init__(self, *args, **kwargs):
         super(JinjaIndex, self).__init__(*args, **kwargs)
@@ -118,4 +118,3 @@ class JinjaDomain(Domain):
 
 def setup(app):
     app.add_domain(JinjaDomain)
-    #app.add_config_value('http_index_ignore_prefixes', [], None)

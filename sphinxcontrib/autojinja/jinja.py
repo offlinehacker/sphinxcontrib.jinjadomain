@@ -8,6 +8,7 @@
 """
 
 import re
+import os
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -46,8 +47,6 @@ def parse_jinja_comment(path):
     :rtype: str
     """
 
-    import pdb; pdb.set_trace()
-
     f= open(path, 'r')
     contents= f.read()
     res=re.match(r"\{\#(.+?)\#\}", contents, flags=re.MULTILINE|re.DOTALL)
@@ -80,11 +79,16 @@ class AutojinjaDirective(Directive):
         return frozenset(endpoints)
 
     def make_rst(self):
+        env = self.state.document.settings.env
         path = self.arguments[0]
-        docstring=parse_jinja_comment(path)
+        docstring=parse_jinja_comment(
+            os.path.join(env.config['jinja_template_path'],path))
         docstring = prepare_docstring(docstring)
-        for line in jinja_directive(path, docstring):
-            yield line
+        if env.config['jinja_template_path']:
+            for line in jinja_directive(path, docstring):
+                yield line
+
+        yield ''
 
     def run(self):
         node = nodes.section()
@@ -100,4 +104,4 @@ def setup(app):
     if 'jinja' not in app.domains:
         jinjadomain.setup(app)
     app.add_directive('autojinja', AutojinjaDirective)
-
+    app.add_config_value("jinja_template_path", "", None)

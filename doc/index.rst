@@ -38,17 +38,16 @@ will be rendered as:
       :param hostname: your computer's hostname
       :type hostname: str
       :param ip: your computer's ip
-      :type ip: st
+      :type ip: str
 
 .. _directives:
 
 Directives
 ----------
 
-.. rst:directive:: .. http:options:: path
+.. rst:directive:: .. jinja:template:: path
 
-   Describes a HTTP resource's :http:method:`OPTIONS` method.
-   It can also be referred by :rst:role:`http:options` role.
+   Describes an jinja template.
 
 
 .. _resource-fields:
@@ -63,156 +62,55 @@ nicely:
 ``param``, ``parameter``, ``arg``, ``argument``
    Description of URL parameter.
 
-``queryparameter``, ``queryparam``, ``qparam``, ``query``
-   Description of parameter passed by request query string.
+.. module:: sphinxcontrib.autojinja.jinja
 
-``formparameter``, ``formparam``, ``fparam``, ``form``
-   Description of parameter passed by request content body, encoded in
-   :mimetype:`application/x-www-form-urlencoded` or
-   :mimetype:`multipart/form-data`.
-
-``statuscode``, ``status``, ``code``
-   Description of response status code.
-
-For example:
-
-.. sourcecode:: rst
-
-   .. http:post:: /posts/(int:post_id)
-
-      Replies a comment to the post.
-
-      :param post_id: post's unique id
-      :type post_id: int
-      :form email: author email address
-      :form body: comment body
-      :status 302: and then redirects to :http:get:`/posts/(int:post_id)`
-      :status 400: when form parameters are missing
-
-It will render like this:
-
-    .. http:post:: /posts/(int:post_id)
-
-       Replies a comment to the post.
-
-       :param post_id: post's unique id
-       :type post_id: int
-       :form email: author email address
-       :form body: comment body
-       :status 302: and then redirects to :http:get:`/posts/(int:post_id)`
-       :status 400: when form parameters are missing
-
-
-.. module:: sphinxcontrib.autohttp.flask
-
-:mod:`sphinxcontrib.autohttp.flask` --- Exporting API reference from Flask app
+:mod:`sphinxcontrib.autojinja.jinja` --- Creates jinja 
 ------------------------------------------------------------------------------
 
-It generates RESTful HTTP API reference documentation from a Flask_
-application's routing table, similar to :mod:`sphinx.ext.autodoc`.
+It generates jinja reference documentation from a start comment in jinja template.
+Basicly it just takes `docstring` betwene `{#` and `#}` and inserts it where you
+specified `autojinja` directive. 
 
-In order to use it, add :mod:`sphinxcontrib.autohttp.flask` into
+In order to use it, add :mod:`sphinxcontrib.autojinja.jinja` into
 :data:`extensions` list of your Sphinx configuration (:file:`conf.py`) file::
 
-    extensions = ['sphinxcontrib.autohttp.flask']
+    extensions = ['sphinxcontrib.autojinja.jinja']
+
+To make everything work you also have to specify relative or absolute path 
+to your templates. If this option is not specified templates won't be displayed
+in your documentation.
+You can do this by setting `jinja_template_path` in your Sphinx configuration
+(:file:`conf.py`) file.
 
 For example:
 
 .. sourcecode:: rst
 
-   .. autoflask:: autoflask_sampleapp:app
-      :undoc-static:
+   .. autojinja:: /etc/network/interfaces
 
 will be rendered as:
 
-    .. autoflask:: autoflask_sampleapp:app
-       :undoc-static:
-
-.. rst:directive:: .. autoflask:: module:app
-
-   Generates HTTP API references from a Flask application. It takes an
-   import name, like::
-
-       your.webapplication.module:app
-
-   Colon character (``:``) separates module path and application variable.
-   Latter part can be more complex::
-
-       your.webapplication.module:create_app(config='default.cfg')
-
-   It's useful when a Flask application is created from the factory function
-   (:func:`create_app`, in the above example).
-
-   It takes several flag options as well.
-
-   ``endpoints``
-      Endpoints to generate a reference.
-
-      .. sourcecode:: rst
-
-         .. autoflask:: yourwebapp:app
-            :endpoints: user, post, friends
-
-      will document :func:`user`, :func:`post`, and :func:`friends`
-      view functions, and
-
-      .. sourcecode:: rst
-
-         .. autoflask:: yourwebapp:app
-            :endpoints:
-
-      will document all endpoints in the flask app.
-
-      For compatibility, omitting this option will produce the same effect
-      like above.
-
-   ``undoc-endpoints``
-      Excludes specified endpoints from generated references.
-
-      For example:
-
-      .. sourcecode:: rst
-
-         .. autoflask:: yourwebapp:app
-            :undoc-endpoints: admin, admin_login
-
-      will exclude :func:`admin`, :func:`admin_login` view functions.
-
-      .. note::
-
-         While the `undoc-members`_ flag of :mod:`sphinx.ext.autodoc` extension
-         includes members without docstrings, ``undoc-endpoints`` option has
-         nothing to do with docstrings. It just excludes specified endpoints.
-
-         .. _undoc-members: http://sphinx.pocoo.org/ext/autodoc.html#directive-automodule
-
-   ``undoc-static``
-      Excludes a view function that serves static files, which is included
-      in Flask by default.
-
-   ``include-empty-docstring``
-      View functions that don't have docstring (:attr:`__doc__`) are excluded
-      by default. If this flag option has given, they become included also.
-
-.. _Flask: http://flask.pocoo.org/
-
+    .. autojinja:: /etc/network/interfaces
 
 Author and License
 ------------------
 
-The :mod:`sphinxcontrib.httpdomain` and :mod:`sphinxcontrib.autohttp`,
-parts of :mod:`sphinxcontrib`, are written by `Hong Minhee`_
+The :mod:`sphinxcontrib.jinjadomain` and :mod:`sphinxcontrib.autojinja`,
+parts of :mod:`sphinxcontrib`, are written by `Jaka Hudoklin`_
 and distributed under BSD license.
 
 The source code is mantained under `the common repository of contributed
-extensions for Sphinx`__ (find the :file:`httpdomain` directory inside
+extensions for Sphinx`__ (find the :file:`jinjadomain` directory inside
 the repository).
 
 .. sourcecode:: console
 
-   $ hg clone https://bitbucket.org/birkenfeld/sphinx-contrib
-   $ cd sphinx-contrib/httpdomain
+   $ git clone git://github.com/offlinehacker/sphinxcontrib.jinjadomain.git
+   $ cd jinjadomain
+   $ python setup.py install
 
-.. _Hong Minhee: http://dahlia.kr/
-__ https://bitbucket.org/birkenfeld/sphinx-contrib
+This package is also avalible on PyPI as `sphinxcontrib-jinjadomain`
+
+.. _Jaka Hudoklin: http://www.offlinehacker.net/
+__ https://github.com/offlinehacker/sphinxcontrib.jinjadomain
 

@@ -8,16 +8,16 @@ domain for describing jinja templates.
 
 You can find the documentation from the following URL:
 
-http://packages.python.org/sphinxcontrib-httpdomain/
+http://packages.python.org/sphinxcontrib-jinjadomain/
 '''
 
 requires = ['Sphinx>=1.0']
 
 setup(
     name='sphinxcontrib-jinjadomain',
-    version='1.1.7',
-    url='http://bitbucket.org/birkenfeld/sphinx-contrib',
-    download_url='http://pypi.python.org/pypi/sphinxcontrib-httpdomain',
+    version='0.5.1',
+    url='https://github.com/offlinehacker/sphinxcontrib.jinjadomain',
+    download_url='http://pypi.python.org/pypi/sphinxcontrib-jinjadomain',
     license='BSD',
     author='Jaka Hudoklin',
     author_email='jakahudoklin@gmail.com',
