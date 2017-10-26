@@ -101,7 +101,7 @@ class AutojinjaDirective(Directive):
 
 
 def setup(app):
-    if 'jinja' not in app.domains:
+    if not app.registry.has_domain('jinja'):
         jinjadomain.setup(app)
     app.add_directive('autojinja', AutojinjaDirective)
     app.add_config_value("jinja_template_path", "", None)
